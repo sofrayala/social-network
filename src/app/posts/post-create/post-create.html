@@ -1,7 +1,11 @@
-<p>post-create works!</p>
-<textarea rows="6" [formControl]="enteredValue"></textarea>
-<hr />
-<button (click)="onAddPost()">Save post</button>
+<mat-card>
+  <mat-form-field>
+    <textarea matInput rows="6" [formControl]="enteredValue"></textarea>
+  </mat-form-field>
+  <button matButton="filled" (click)="onAddPost()" color="primary">
+    Save post
+  </button>
+</mat-card>
 <p>
   {{ newPost }}
 </p>
