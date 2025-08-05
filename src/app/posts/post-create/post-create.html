@@ -1,11 +1,11 @@
 <mat-card>
   <mat-form-field>
-    <textarea matInput rows="6" [formControl]="enteredValue"></textarea>
+    <input matInput type="text" [formControl]="enteredTitle" />
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput rows="6" [formControl]="enteredContent"></textarea>
   </mat-form-field>
   <button matButton="filled" (click)="onAddPost()" color="primary">
     Save post
   </button>
 </mat-card>
-<p>
-  {{ newPost }}
-</p>

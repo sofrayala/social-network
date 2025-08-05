@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,10 +18,15 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './post-create.css',
 })
 export class PostCreate {
-  enteredValue = new FormControl('');
-  newPost: string = 'NO CONTENT';
+  enteredTitle = new FormControl('');
+  enteredContent = new FormControl('');
+  @Output() postCreated = new EventEmitter();
 
   onAddPost() {
-    this.newPost = this.enteredValue.value ?? '';
+    const post = {
+      title: this.enteredTitle.value ?? '',
+      content: this.enteredContent.value ?? '',
+    };
+    this.postCreated.emit(post);
   }
 }
