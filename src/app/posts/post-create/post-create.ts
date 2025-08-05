@@ -1,9 +1,16 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import {
+  FormControlName,
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { PostInterface } from '../../post-interface';
 
 @Component({
   selector: 'app-post-create',
@@ -18,14 +25,28 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './post-create.css',
 })
 export class PostCreate {
-  enteredTitle = new FormControl('');
-  enteredContent = new FormControl('');
-  @Output() postCreated = new EventEmitter();
+  postForm!: FormGroup;
 
-  onAddPost() {
-    const post = {
-      title: this.enteredTitle.value ?? '',
-      content: this.enteredContent.value ?? '',
+  ngOnInit() {
+    this.postForm = new FormGroup({
+      title: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      content: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+    });
+  }
+
+  @Output() postCreated = new EventEmitter<PostInterface>();
+
+  onAddPost(form: FormGroup) {
+    if (form.invalid) {
+      return;
+    }
+    const post: PostInterface = {
+      title: form.value.title ?? '',
+      content: form.value.content ?? '',
     };
     this.postCreated.emit(post);
   }
