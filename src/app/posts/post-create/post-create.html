@@ -1,7 +1,18 @@
-<p>post-create works!</p>
-<textarea rows="6" [formControl]="enteredValue"></textarea>
-<hr />
-<button (click)="onAddPost()">Save post</button>
-<p>
-  {{ newPost }}
-</p>
+<mat-card>
+  <form (ngSubmit)="onAddPost(postForm)" [formGroup]="postForm">
+    <mat-form-field>
+      <input matInput type="text" formControlName="title" />
+      @if (postForm.get('title')?.invalid ||postForm.get('title')?.touched) {
+      <mat-error>Title is required</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput rows="6" formControlName="content"></textarea>
+      @if (postForm.get('content')?.invalid || postForm.get('content')?.touched)
+      {
+      <mat-error> Content is required</mat-error>
+      }
+    </mat-form-field>
+    <button matButton="filled" type="submit" color="primary">Save post</button>
+  </form>
+</mat-card>
