@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { PostCreate } from './posts/post-create/post-create';
 import { Header } from './header/header';
 import { PostList } from './posts/post-list/post-list';
-import { PostInterface } from './post-interface';
+import { PostInterface } from './posts/interfaces/post-interface';
 
 @Component({
   selector: 'app-root',

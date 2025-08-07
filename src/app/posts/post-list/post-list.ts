@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { PostInterface } from '../../post-interface';
+import { PostInterface } from '../interfaces/post-interface';
 
 @Component({
   selector: 'app-post-list',
