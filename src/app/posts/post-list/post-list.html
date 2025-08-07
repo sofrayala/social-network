@@ -5,6 +5,11 @@
       {{ post.title }}
     </mat-expansion-panel-header>
     <p>{{ post.content }}</p>
+
+    <mat-action-row>
+      <button matButton>EDIT</button>
+      <button matButton="tonal">DELETE</button>
+    </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
 } } @else {

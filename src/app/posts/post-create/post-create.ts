@@ -45,10 +45,9 @@ export class PostCreate {
     if (form.invalid) {
       return;
     }
-    // const post: PostInterface = {
-    //   title: form.value.title ?? '',
-    //   content: form.value.content ?? '',
-    // };
+
     this.postsService.addPost(form.value.title, form.value.content);
+
+    this.postForm.reset();
   }
 }
