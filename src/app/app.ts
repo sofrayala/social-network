@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { PostCreate } from './posts/post-create/post-create';
 import { Header } from './header/header';
 import { PostList } from './posts/post-list/post-list';
-import { PostInterface } from './posts/interfaces/post-interface';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +10,4 @@ import { PostInterface } from './posts/interfaces/post-interface';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  storedPosts: PostInterface[] = [];
-
-  onPostAdded(post: PostInterface) {
-    this.storedPosts.push(post);
-  }
-}
+export class App {}

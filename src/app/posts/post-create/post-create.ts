@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
-  FormControlName,
   ReactiveFormsModule,
   FormGroup,
   FormControl,
@@ -11,9 +10,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { PostInterface } from '../interfaces/post-interface';
+import { PostsService } from '../../services/posts-service';
 
 @Component({
   selector: 'app-post-create',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -27,6 +28,8 @@ import { PostInterface } from '../interfaces/post-interface';
 export class PostCreate {
   postForm!: FormGroup;
 
+  constructor(public postsService: PostsService) {}
+
   ngOnInit() {
     this.postForm = new FormGroup({
       title: new FormControl(null, {
@@ -38,16 +41,13 @@ export class PostCreate {
     });
   }
 
-  @Output() postCreated = new EventEmitter<PostInterface>();
-
   onAddPost(form: FormGroup) {
     if (form.invalid) {
       return;
     }
-    const post: PostInterface = {
-      title: form.value.title ?? '',
-      content: form.value.content ?? '',
-    };
-    this.postCreated.emit(post);
+
+    this.postsService.addPost(form.value.title, form.value.content);
+
+    this.postForm.reset();
   }
 }

@@ -1,10 +1,15 @@
-@if(posts.length > 0){ @for (post of posts; track post) {
+@if(posts().length > 0) { @for (post of posts(); track $index) {
 <mat-accordion multi="true">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       {{ post.title }}
     </mat-expansion-panel-header>
     <p>{{ post.content }}</p>
+
+    <mat-action-row>
+      <button matButton>EDIT</button>
+      <button matButton="tonal">DELETE</button>
+    </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
 } } @else {
