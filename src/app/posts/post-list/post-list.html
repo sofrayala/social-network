@@ -1,4 +1,4 @@
-@if(posts.length > 0){ @for (post of posts; track post) {
+@if(posts().length > 0) { @for (post of posts(); track $index) {
 <mat-accordion multi="true">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
