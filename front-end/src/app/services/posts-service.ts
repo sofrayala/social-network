@@ -25,6 +25,10 @@ export class PostsService {
 
   addPost(id: string, title: string, content: string) {
     const post: PostInterface = { id: id, title: title, content: content };
-    this.postsUpdated.update((currentPosts) => [...currentPosts, post]);
+    this.http.post<{message: string}>('http://localhost:3000/api/posts', post)
+    .subscribe((responseData)=>{
+      console.log(responseData.message)
+      this.postsUpdated.update((currentPosts) => [...currentPosts, post]);
+    })
   }
 }

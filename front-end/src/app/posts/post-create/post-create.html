@@ -1,6 +1,12 @@
 <mat-card>
   <form (ngSubmit)="onAddPost(postForm)" [formGroup]="postForm">
     <mat-form-field>
+      <input matInput type="text" formControlName="id" placeholder="id" />
+      @if (postForm.get('id')?.invalid ||postForm.get('id')?.touched) {
+      <mat-error>id is required</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
       <input matInput type="text" formControlName="title" placeholder="Title" />
       @if (postForm.get('title')?.invalid ||postForm.get('title')?.touched) {
       <mat-error>Title is required</mat-error>
