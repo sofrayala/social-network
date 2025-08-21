@@ -38,6 +38,9 @@ export class PostCreate {
       content: new FormControl(null, {
         validators: [Validators.required],
       }),
+      id: new FormControl(null, {
+        validators: [Validators.required],
+      }),
     });
   }
 
@@ -46,7 +49,7 @@ export class PostCreate {
       return;
     }
 
-    // this.postsService.addPost(form.value.title, form.value.content);
+    this.postsService.addPost(form.value.title, form.value.content, form.value.id);
 
     this.postForm.reset();
   }
