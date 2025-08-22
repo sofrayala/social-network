@@ -1,7 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
+import Post from "./models/post.js";
+import mongoose from "mongoose";
 
 const app = express();
+
+mongoose.connect('mongodb+srv://sofiarayala1995:<db_password>@cluster0.kyn7ojp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,7 +24,10 @@ app.use((req, res, next) => {
 });
 
 app.post("/api/posts", (req, res, next) => {
-  const post = req.body;
+  const post = new Post({
+    title: req.body.title,
+    content: req.body.content,
+  });
   console.log(post);
   res.status(201).json({
     message: "Post added successfully",
