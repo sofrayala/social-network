@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { PostInterface } from '../posts/interfaces/post-interface';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, subscribeOn } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,5 +38,10 @@ export class PostsService {
       console.log(responseData.message)
       this.postsUpdated.update((currentPosts) => [...currentPosts, post]);
     })
+  }
+
+  deletePost(postId: string){
+    this.http.delete("http://localhost:3000/api/posts/" + postId)
+    .subscribe(()=>{console.log("Deleted")})
   }
 }
