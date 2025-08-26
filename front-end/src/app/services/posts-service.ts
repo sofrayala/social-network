@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { PostInterface } from '../posts/interfaces/post-interface';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, subscribeOn } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -31,12 +31,26 @@ export class PostsService {
     return this.postsUpdated.asReadonly();
   }
 
-  addPost(id: string, title: string, content: string) {
-    const post: PostInterface = { id: id, title: title, content: content };
-    this.http.post<{message: string}>('http://localhost:3000/api/posts', post)
+  addPost(title: string, content: string) {
+    const post = {title: title, content: content };
+    this.http.post<{message: string; post:PostInterface}>('http://localhost:3000/api/posts', post)
     .subscribe((responseData)=>{
-      console.log(responseData.message)
-      this.postsUpdated.update((currentPosts) => [...currentPosts, post]);
+      const newPost: PostInterface = {
+        id: responseData.post.id,
+        title: responseData.post.title,
+        content: responseData.post.content
+      };
+      this.postsUpdated.update((currentPosts) => [...currentPosts, newPost]);
+    })
+  }
+
+  deletePost(postId: string){
+    this.http.delete("http://localhost:3000/api/posts/" + postId)
+    .subscribe(()=>{
+      const updatedPosts = this.posts.filter(post => post.id != postId);
+      this.posts = updatedPosts
+      this.postsUpdated.set([...updatedPosts])
+      this.getPosts()
     })
   }
 }

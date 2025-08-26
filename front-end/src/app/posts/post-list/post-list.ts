@@ -19,4 +19,8 @@ export class PostList implements OnInit {
     this.postsService.getPosts();
     this.posts = this.postsService.postsSignal;
   }
+
+  onDelete(postId : string){
+    this.postsService.deletePost(postId)
+  }
 }

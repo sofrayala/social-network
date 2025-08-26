@@ -8,7 +8,7 @@
 
     <mat-action-row>
       <button matButton>EDIT</button>
-      <button matButton="tonal">DELETE</button>
+      <button matButton="tonal" (click)="onDelete(post.id)" >DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
