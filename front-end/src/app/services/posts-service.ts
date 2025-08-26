@@ -33,7 +33,7 @@ export class PostsService {
 
   addPost(title: string, content: string) {
     const post = {title: title, content: content };
-    this.http.post<{message: string; post:any}>('http://localhost:3000/api/posts', post)
+    this.http.post<{message: string; post:PostInterface}>('http://localhost:3000/api/posts', post)
     .subscribe((responseData)=>{
       const newPost: PostInterface = {
         id: responseData.post.id,
@@ -50,6 +50,7 @@ export class PostsService {
       const updatedPosts = this.posts.filter(post => post.id != postId);
       this.posts = updatedPosts
       this.postsUpdated.set([...updatedPosts])
+      this.getPosts()
     })
   }
 }
