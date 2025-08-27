@@ -1,1 +1,9 @@
-<mat-toolbar> MyMessages </mat-toolbar>
+<mat-toolbar> 
+<span> <a [routerLink]="['/']">My Messages</a></span>
+<ul>
+    <li>
+        <a [routerLink]="['/create']">New post</a>
+    </li>
+</ul>
+
+</mat-toolbar>
