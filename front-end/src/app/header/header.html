@@ -1,8 +1,10 @@
 <mat-toolbar> 
 <span> <a [routerLink]="['/']">My Messages</a></span>
+
+<span class="spacer"></span>
 <ul>
     <li>
-        <a [routerLink]="['/create']">New post</a>
+        <a mat-button [routerLink]="['/create']" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">New post</a>
     </li>
 </ul>
 

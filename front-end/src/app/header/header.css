@@ -2,3 +2,22 @@ mat-toolbar {
   background-color: var(--mat-sys-primary);
   color: var(--mat-sys-on-primary);
 }
+
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.spacer{
+  flex: 1 1 auto;
+}
+
+a{
+  text-decoration: none;
+  color: white!important;
+}
+
+.active-link{
+  color: #ff4081!important; 
+}
