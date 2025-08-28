@@ -1,5 +1,5 @@
 <mat-card>
-  <form (ngSubmit)="onAddPost(postForm)" [formGroup]="postForm">
+  <form (ngSubmit)="onSavePost(postForm)" [formGroup]="postForm">
     
     <mat-form-field>
       <input matInput type="text" formControlName="title" placeholder="Title" />

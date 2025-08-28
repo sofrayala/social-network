@@ -31,6 +31,10 @@ export class PostsService {
     return this.postsUpdated.asReadonly();
   }
 
+  getPost(id:string){
+    return {...this.posts.find(p => p.id === id)}
+  }
+
   addPost(title: string, content: string) {
     const post = {title: title, content: content };
     this.http.post<{message: string; post:PostInterface}>('http://localhost:3000/api/posts', post)
@@ -42,6 +46,16 @@ export class PostsService {
       };
       this.postsUpdated.update((currentPosts) => [...currentPosts, newPost]);
     })
+  }
+
+  updatePost(id:string, title:string, content:string){
+    const post: PostInterface = {id: id, title: title, content: content};
+    this.http.put("http://localhost:3000/api/posts/" + id, post).subscribe(
+
+      response =>{
+        this.getPosts();
+      }
+    )
   }
 
   deletePost(postId: string){

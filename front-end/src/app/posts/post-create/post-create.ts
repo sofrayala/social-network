@@ -11,6 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { PostInterface } from '../interfaces/post-interface';
 import { PostsService } from '../../services/posts-service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-post-create',
@@ -25,10 +26,13 @@ import { PostsService } from '../../services/posts-service';
   templateUrl: './post-create.html',
   styleUrl: './post-create.css',
 })
-export class PostCreate {
+export class PostCreate implements OnInit {
   postForm!: FormGroup;
+  private mode= 'create'
+  private postId: string = '';
+  post!: PostInterface;
 
-  constructor(public postsService: PostsService) {}
+  constructor(public postsService: PostsService, public route: ActivatedRoute) {}
 
   ngOnInit() {
     this.postForm = new FormGroup({
@@ -40,14 +44,42 @@ export class PostCreate {
       }),
       
     });
+    
+    this.route.paramMap.subscribe((paramMap: ParamMap)=>{
+      if (paramMap.has('postId')) {
+  this.mode = 'edit';
+  const postId = paramMap.get('postId');
+  if (postId) {
+    this.postId = postId;
+    const postData = this.postsService.getPost(this.postId);
+    if (postData && postData.id && postData.title && postData.content) {
+      this.post = {
+        id: postData.id,
+        title: postData.title,
+        content: postData.content
+      };
+      this.postForm.patchValue({
+        title: this.post.title,
+        content: this.post.content
+      });
+    }
+  }
+}else{
+        this.mode = 'create'
+      }
+    })
   }
 
-  onAddPost(form: FormGroup) {
+  onSavePost(form: FormGroup) {
     if (form.invalid) {
       return;
     }
+    if(this.mode === 'create'){
+      this.postsService.addPost(form.value.title, form.value.content);
+    }else{
+      this.postsService.updatePost(this.postId,form.value.title, form.value.content )
+    }
 
-    this.postsService.addPost(form.value.title, form.value.content);
 
     this.postForm.reset();
   }

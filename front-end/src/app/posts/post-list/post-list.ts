@@ -3,10 +3,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { PostInterface } from '../interfaces/post-interface';
 import { PostsService } from '../../services/posts-service';
 import { MatButton } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
-  imports: [MatExpansionModule, MatButton],
+  imports: [MatExpansionModule, MatButton, RouterLink],
   templateUrl: './post-list.html',
   styleUrl: './post-list.css',
 })
