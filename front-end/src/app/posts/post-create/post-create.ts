@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { PostInterface } from '../interfaces/post-interface';
 import { PostsService } from '../../services/posts-service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-post-create',
@@ -21,16 +22,17 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
-    MatButtonModule,
+    MatButtonModule,MatProgressSpinnerModule
   ],
   templateUrl: './post-create.html',
   styleUrl: './post-create.css',
 })
 export class PostCreate implements OnInit {
   postForm!: FormGroup;
+  post!: PostInterface;
+  isLoading = false;
   private mode= 'create'
   private postId: string = '';
-  post!: PostInterface;
 
   constructor(public postsService: PostsService, public route: ActivatedRoute) {}
 
@@ -51,7 +53,9 @@ export class PostCreate implements OnInit {
   const postId = paramMap.get('postId');
  if (postId) {
       this.postId = postId;
+      this.isLoading = true
       this.postsService.getPost(this.postId).subscribe((postData: any) => {
+        this.isLoading = false;
         this.post = {
           id: postData._id,
           title: postData.title,
@@ -73,6 +77,7 @@ export class PostCreate implements OnInit {
     if (form.invalid) {
       return;
     }
+    this.isLoading = true;
     if(this.mode === 'create'){
       this.postsService.addPost(form.value.title, form.value.content);
     }else{

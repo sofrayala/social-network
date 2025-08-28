@@ -1,11 +1,16 @@
-@if(posts().length > 0) { @for (post of posts(); track $index) {
-<mat-accordion multi="true">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      {{ post.title }}
+@if(isLoading){
+  <mat-spinner></mat-spinner>
+}@else{
+
+  
+  @if(posts().length > 0) { @for (post of posts(); track $index) {
+    <mat-accordion multi="true">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          {{ post.title }}
     </mat-expansion-panel-header>
     <p>{{ post.content }}</p>
-
+    
     <mat-action-row>
       <a matButton [routerLink]="['/edit', post.id]">EDIT</a>
       <button matButton="tonal" (click)="onDelete(post.id)" >DELETE</button>
@@ -13,5 +18,6 @@
   </mat-expansion-panel>
 </mat-accordion>
 } } @else {
-<p class="info-text mat-body-1">No posts added yet.</p>
+  <p class="info-text mat-body-1">No posts added yet.</p>
+}
 }

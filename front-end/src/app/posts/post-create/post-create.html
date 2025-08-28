@@ -1,24 +1,29 @@
+
 <mat-card>
+@if(isLoading){
+  <mat-spinner></mat-spinner>
+}@else{
   <form (ngSubmit)="onSavePost(postForm)" [formGroup]="postForm">
     
     <mat-form-field>
       <input matInput type="text" formControlName="title" placeholder="Title" />
       @if (postForm.get('title')?.invalid ||postForm.get('title')?.touched) {
-      <mat-error>Title is required</mat-error>
+        <mat-error>Title is required</mat-error>
       }
     </mat-form-field>
     <mat-form-field>
       <textarea
-        matInput
-        rows="6"
-        formControlName="content"
-        placeholder="Content"
+      matInput
+      rows="6"
+      formControlName="content"
+      placeholder="Content"
       ></textarea>
       @if (postForm.get('content')?.invalid || postForm.get('content')?.touched)
       {
-      <mat-error> Content is required</mat-error>
+        <mat-error> Content is required</mat-error>
       }
     </mat-form-field>
     <button matButton="filled" type="submit">Save post</button>
   </form>
+}
 </mat-card>

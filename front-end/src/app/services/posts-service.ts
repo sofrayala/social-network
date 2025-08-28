@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { PostInterface } from '../posts/interfaces/post-interface';
 import { HttpClient } from '@angular/common/http';
 import { map, subscribeOn } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class PostsService {
   private posts: PostInterface[] = [];
   private postsUpdated = signal<PostInterface[]>([]);
 
-  constructor(private http:HttpClient){}
+  constructor(private http:HttpClient, private router: Router){}
 
   getPosts() {
     this.http.get<{message: string, posts: any}>('http://localhost:3000/api/posts')
@@ -45,12 +46,12 @@ export class PostsService {
         content: responseData.post.content
       };
       this.postsUpdated.update((currentPosts) => [...currentPosts, newPost]);
+      this.router.navigate(["/"])
+
     })
   }
 
-  //////STOOPPPPP////
-
-  /////STAAAAP/////
+ 
 
   updatePost(id:string, title:string, content:string){
     const post: PostInterface = {id: id, title: title, content: content};
@@ -61,8 +62,8 @@ export class PostsService {
         const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
         updatedPosts[oldPostIndex] = post;
         this.posts = updatedPosts;
-        this.postsUpdated.set([...this.posts])
-        // this.getPosts();
+        this.postsUpdated.set([...this.posts]);
+        this.router.navigate(["/"])
       }
     )
   }
