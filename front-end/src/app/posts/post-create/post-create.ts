@@ -49,26 +49,25 @@ export class PostCreate implements OnInit {
       if (paramMap.has('postId')) {
   this.mode = 'edit';
   const postId = paramMap.get('postId');
-  if (postId) {
-    this.postId = postId;
-    const postData = this.postsService.getPost(this.postId);
-    if (postData && postData.id && postData.title && postData.content) {
-      this.post = {
-        id: postData.id,
-        title: postData.title,
-        content: postData.content
-      };
-      this.postForm.patchValue({
-        title: this.post.title,
-        content: this.post.content
+ if (postId) {
+      this.postId = postId;
+      this.postsService.getPost(this.postId).subscribe((postData: any) => {
+        this.post = {
+          id: postData._id,
+          title: postData.title,
+          content: postData.content
+        };
+        this.postForm.patchValue({
+          title: this.post.title,
+          content: this.post.content
+        });
       });
     }
-  }
 }else{
         this.mode = 'create'
       }
-    })
-  }
+    });
+  }  
 
   onSavePost(form: FormGroup) {
     if (form.invalid) {
