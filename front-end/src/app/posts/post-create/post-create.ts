@@ -39,10 +39,10 @@ export class PostCreate implements OnInit {
   ngOnInit() {
     this.postForm = new FormGroup({
       title: new FormControl(null, {
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.minLength(3)],
       }),
       content: new FormControl(null, {
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.minLength(3)],
       }),
       
     });
@@ -73,15 +73,15 @@ export class PostCreate implements OnInit {
     });
   }  
 
-  onSavePost(form: FormGroup) {
-    if (form.invalid) {
+  onSavePost() {
+    if (this.postForm.invalid) {
       return;
     }
     this.isLoading = true;
     if(this.mode === 'create'){
-      this.postsService.addPost(form.value.title, form.value.content);
+      this.postsService.addPost(this.postForm.value.title, this.postForm.value.content);
     }else{
-      this.postsService.updatePost(this.postId,form.value.title, form.value.content )
+      this.postsService.updatePost(this.postId,this.postForm.value.title, this.postForm.value.content )
     }
 
 

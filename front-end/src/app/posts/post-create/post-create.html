@@ -3,11 +3,11 @@
 @if(isLoading){
   <mat-spinner></mat-spinner>
 }@else{
-  <form (ngSubmit)="onSavePost(postForm)" [formGroup]="postForm">
+  <form (ngSubmit)="onSavePost()" [formGroup]="postForm">
     
     <mat-form-field>
       <input matInput type="text" formControlName="title" placeholder="Title" />
-      @if (postForm.get('title')?.invalid ||postForm.get('title')?.touched) {
+      @if (postForm.get('title')?.invalid) {
         <mat-error>Title is required</mat-error>
       }
     </mat-form-field>
@@ -23,7 +23,7 @@
       formControlName="content"
       placeholder="Content"
       ></textarea>
-      @if (postForm.get('content')?.invalid || postForm.get('content')?.touched)
+      @if (postForm.get('content')?.invalid)
       {
         <mat-error> Content is required</mat-error>
       }
