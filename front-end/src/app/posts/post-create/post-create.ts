@@ -44,6 +44,7 @@ export class PostCreate implements OnInit {
       content: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)],
       }),
+      image: new FormControl(null, {validators:[Validators.required]})
       
     });
     
@@ -72,6 +73,18 @@ export class PostCreate implements OnInit {
       }
     });
   }  
+
+  onImagePicked(event: Event){
+const input = event.target as HTMLInputElement;
+  let file: File | null = null;
+    if (input.files && input.files.length > 0) {
+    file = input.files[0];
+  }
+  this.postForm.patchValue({image: file});
+  this.postForm.get('image')?.updateValueAndValidity();
+  console.log(file);
+  console.log(this.postForm);
+  } 
 
   onSavePost() {
     if (this.postForm.invalid) {
