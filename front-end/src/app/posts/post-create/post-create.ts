@@ -31,6 +31,7 @@ export class PostCreate implements OnInit {
   postForm!: FormGroup;
   post!: PostInterface;
   isLoading = false;
+  imagePreview!:string;
   private mode= 'create'
   private postId: string = '';
 
@@ -76,14 +77,19 @@ export class PostCreate implements OnInit {
 
   onImagePicked(event: Event){
 const input = event.target as HTMLInputElement;
-  let file: File | null = null;
+  let file!: File | undefined;
     if (input.files && input.files.length > 0) {
     file = input.files[0];
+    this.postForm.patchValue({image: file});
+    this.postForm.get('image')?.updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () =>{ 
+      this.imagePreview = reader.result as string
+    }
+    reader.readAsDataURL(file!)
+  } else {
+    this.imagePreview = '';
   }
-  this.postForm.patchValue({image: file});
-  this.postForm.get('image')?.updateValueAndValidity();
-  console.log(file);
-  console.log(this.postForm);
   } 
 
   onSavePost() {

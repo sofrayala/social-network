@@ -16,6 +16,12 @@
       <input type="file" #filePicker (change)="onImagePicked($event)">
       
     </div>
+    @if(imagePreview !== '' && imagePreview){
+    <div class="image-preview">
+      <img [src]="imagePreview" [alt]="postForm.value.title">
+    </div>
+        }
+
     <mat-form-field>
       <textarea
       matInput
