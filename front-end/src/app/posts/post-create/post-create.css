@@ -7,8 +7,13 @@ button {
   margin: auto;
   margin-bottom: 1rem;
   background-color: #ff4081!important; 
+  color: white!important;
 }
 
 mat-spinner{
   margin: auto;
+}
+
+input[type="file"]{
+visibility: hidden;
 }
