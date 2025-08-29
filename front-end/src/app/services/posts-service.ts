@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { PostInterface } from '../posts/interfaces/post-interface';
 import { HttpClient } from '@angular/common/http';
 import { map, subscribeOn } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class PostsService {
   private posts: PostInterface[] = [];
   private postsUpdated = signal<PostInterface[]>([]);
 
-  constructor(private http:HttpClient){}
+  constructor(private http:HttpClient, private router: Router){}
 
   getPosts() {
     this.http.get<{message: string, posts: any}>('http://localhost:3000/api/posts')
@@ -31,6 +32,10 @@ export class PostsService {
     return this.postsUpdated.asReadonly();
   }
 
+  getPost(id:string){
+    return this.http.get<{_id: string, title: string, content:string}>("http://localhost:3000/api/posts/" + id)
+  }
+
   addPost(title: string, content: string) {
     const post = {title: title, content: content };
     this.http.post<{message: string; post:PostInterface}>('http://localhost:3000/api/posts', post)
@@ -41,7 +46,26 @@ export class PostsService {
         content: responseData.post.content
       };
       this.postsUpdated.update((currentPosts) => [...currentPosts, newPost]);
+      this.router.navigate(["/"])
+
     })
+  }
+
+ 
+
+  updatePost(id:string, title:string, content:string){
+    const post: PostInterface = {id: id, title: title, content: content};
+    this.http.put("http://localhost:3000/api/posts/" + id, post).subscribe(
+
+      response =>{
+        const updatedPosts = [...this.posts];
+        const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
+        updatedPosts[oldPostIndex] = post;
+        this.posts = updatedPosts;
+        this.postsUpdated.set([...this.posts]);
+        this.router.navigate(["/"])
+      }
+    )
   }
 
   deletePost(postId: string){
