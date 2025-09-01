@@ -16,7 +16,7 @@
       <input type="file" #filePicker (change)="onImagePicked($event)">
       
     </div>
-    @if(imagePreview !== '' && imagePreview){
+    @if(imagePreview !== '' && imagePreview && postForm.get('image')?.valid){
     <div class="image-preview">
       <img [src]="imagePreview" [alt]="postForm.value.title">
     </div>

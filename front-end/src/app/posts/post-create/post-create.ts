@@ -13,6 +13,7 @@ import { PostInterface } from '../interfaces/post-interface';
 import { PostsService } from '../../services/posts-service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { mimeType } from './mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -45,7 +46,9 @@ export class PostCreate implements OnInit {
       content: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)],
       }),
-      image: new FormControl(null, {validators:[Validators.required]})
+      image: new FormControl(null, {
+        validators:[Validators.required], 
+        asyncValidators:[mimeType]})
       
     });
     
