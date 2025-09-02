@@ -5,16 +5,20 @@ import { PostsService } from '../../services/posts-service';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-post-list',
-  imports: [MatExpansionModule, MatButton, RouterLink, MatProgressSpinnerModule],
+  imports: [MatExpansionModule, MatButton, RouterLink, MatProgressSpinnerModule, MatPaginatorModule],
   templateUrl: './post-list.html',
   styleUrl: './post-list.css',
 })
 export class PostList implements OnInit {
   posts: any;
   isLoading=false;
+  totalPosts = 10;
+  postsPerPage = 2;
+  pageSizeOptions = [1,2,5,10];
 
   constructor(private postsService: PostsService) {}
 
@@ -24,6 +28,10 @@ export class PostList implements OnInit {
     this.isLoading = false;
     this.posts = this.postsService.postsSignal;
   }
+
+onChangedPage(pageData: PageEvent){
+console.log(pageData);
+}
 
   onDelete(postId : string){
     this.postsService.deletePost(postId)
