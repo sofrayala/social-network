@@ -14,12 +14,15 @@ export class PostsService {
   constructor(private http:HttpClient, private router: Router){}
 
   getPosts() {
-    this.http.get<{message: string, posts: any}>('http://localhost:3000/api/posts')
-    .pipe(map((postData)=>{ return postData.posts.map((post: { title: any; content: any; _id: any; }) =>{
+    this.http
+    .get<{message: string, posts: any}>('http://localhost:3000/api/posts')
+    .pipe(map((postData)=>{ return postData.posts
+    .map((post: { title: any; content: any; _id: any; imagePath:any }) =>{
       return {
         title: post.title,
         content: post.content,
-        id: post._id
+        id: post._id,
+        imagePath: post.imagePath,
       }
     }) }))
     .subscribe((transformedPosts)=>{
@@ -48,7 +51,8 @@ export class PostsService {
       const post: PostInterface = {
         id: responseData.post.id,
         title: responseData.post.title,
-        content: responseData.post.content
+        content: responseData.post.content,
+        imagePath: responseData.post.imagePath,
       };
       this.postsUpdated.update((currentPosts) => [...currentPosts, post]);
       this.router.navigate(["/"])
@@ -59,7 +63,7 @@ export class PostsService {
  
 
   updatePost(id:string, title:string, content:string){
-    const post: PostInterface = {id: id, title: title, content: content};
+    const post: PostInterface = {id: id, title: title, content: content, imagePath: null};
     this.http.put("http://localhost:3000/api/posts/" + id, post).subscribe(
 
       response =>{

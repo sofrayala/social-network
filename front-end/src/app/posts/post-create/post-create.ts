@@ -64,7 +64,8 @@ export class PostCreate implements OnInit {
         this.post = {
           id: postData._id,
           title: postData.title,
-          content: postData.content
+          content: postData.content,
+          imagePath: null,
         };
         this.postForm.patchValue({
           title: this.post.title,
