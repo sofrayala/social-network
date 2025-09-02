@@ -65,11 +65,12 @@ export class PostCreate implements OnInit {
           id: postData._id,
           title: postData.title,
           content: postData.content,
-          imagePath: null,
+          imagePath: postData.imagePath
         };
         this.postForm.patchValue({
           title: this.post.title,
-          content: this.post.content
+          content: this.post.content,
+          image: this.post.imagePath,
         });
       });
     }
@@ -107,7 +108,11 @@ const input = event.target as HTMLInputElement;
         this.postForm.value.content, 
         this.postForm.value.image);
     }else{
-      this.postsService.updatePost(this.postId,this.postForm.value.title, this.postForm.value.content )
+      this.postsService.updatePost(
+        this.postId,
+        this.postForm.value.title, 
+        this.postForm.value.content,
+        this.postForm.value.image )
     }
 
 
