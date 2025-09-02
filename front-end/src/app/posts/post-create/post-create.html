@@ -3,19 +3,25 @@
 @if(isLoading){
   <mat-spinner></mat-spinner>
 }@else{
-  <form (ngSubmit)="onSavePost(postForm)" [formGroup]="postForm">
+  <form (ngSubmit)="onSavePost()" [formGroup]="postForm">
     
     <mat-form-field>
       <input matInput type="text" formControlName="title" placeholder="Title" />
-      @if (postForm.get('title')?.invalid ||postForm.get('title')?.touched) {
+      @if (postForm.get('title')?.invalid) {
         <mat-error>Title is required</mat-error>
       }
     </mat-form-field>
     <div>
       <button mat-button type="button" (click)="filePicker.click()">Pick an image</button>
-      <input type="file" #filePicker>
+      <input type="file" #filePicker (change)="onImagePicked($event)">
       
     </div>
+    @if(imagePreview !== '' && imagePreview && postForm.get('image')?.valid){
+    <div class="image-preview">
+      <img [src]="imagePreview" [alt]="postForm.value.title">
+    </div>
+        }
+
     <mat-form-field>
       <textarea
       matInput
@@ -23,7 +29,7 @@
       formControlName="content"
       placeholder="Content"
       ></textarea>
-      @if (postForm.get('content')?.invalid || postForm.get('content')?.touched)
+      @if (postForm.get('content')?.invalid)
       {
         <mat-error> Content is required</mat-error>
       }

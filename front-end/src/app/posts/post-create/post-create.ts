@@ -13,6 +13,7 @@ import { PostInterface } from '../interfaces/post-interface';
 import { PostsService } from '../../services/posts-service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { mimeType } from './mime-type.validator';
 
 @Component({
   selector: 'app-post-create',
@@ -31,6 +32,7 @@ export class PostCreate implements OnInit {
   postForm!: FormGroup;
   post!: PostInterface;
   isLoading = false;
+  imagePreview!:string;
   private mode= 'create'
   private postId: string = '';
 
@@ -39,11 +41,14 @@ export class PostCreate implements OnInit {
   ngOnInit() {
     this.postForm = new FormGroup({
       title: new FormControl(null, {
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.minLength(3)],
       }),
       content: new FormControl(null, {
-        validators: [Validators.required],
+        validators: [Validators.required, Validators.minLength(3)],
       }),
+      image: new FormControl(null, {
+        validators:[Validators.required], 
+        asyncValidators:[mimeType]})
       
     });
     
@@ -73,15 +78,35 @@ export class PostCreate implements OnInit {
     });
   }  
 
-  onSavePost(form: FormGroup) {
-    if (form.invalid) {
+  onImagePicked(event: Event){
+const input = event.target as HTMLInputElement;
+  let file!: File | undefined;
+    if (input.files && input.files.length > 0) {
+    file = input.files[0];
+    this.postForm.patchValue({image: file});
+    this.postForm.get('image')?.updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () =>{ 
+      this.imagePreview = reader.result as string
+    }
+    reader.readAsDataURL(file!)
+  } else {
+    this.imagePreview = '';
+  }
+  } 
+
+  onSavePost() {
+    if (this.postForm.invalid) {
       return;
     }
     this.isLoading = true;
     if(this.mode === 'create'){
-      this.postsService.addPost(form.value.title, form.value.content);
+      this.postsService.addPost(
+        this.postForm.value.title, 
+        this.postForm.value.content, 
+        this.postForm.value.image);
     }else{
-      this.postsService.updatePost(this.postId,form.value.title, form.value.content )
+      this.postsService.updatePost(this.postId,this.postForm.value.title, this.postForm.value.content )
     }
 
 

@@ -36,16 +36,21 @@ export class PostsService {
     return this.http.get<{_id: string, title: string, content:string}>("http://localhost:3000/api/posts/" + id)
   }
 
-  addPost(title: string, content: string) {
-    const post = {title: title, content: content };
-    this.http.post<{message: string; post:PostInterface}>('http://localhost:3000/api/posts', post)
-    .subscribe((responseData)=>{
-      const newPost: PostInterface = {
+  addPost(title: string, content: string, image: File) {
+    const postData = new FormData();
+    postData.append("title",title);
+    postData.append("content", content);
+    postData.append('image', image, title);
+
+    this.http
+    .post<{message: string; post:PostInterface}>('http://localhost:3000/api/posts', postData)
+    .subscribe((responseData)=>{      
+      const post: PostInterface = {
         id: responseData.post.id,
         title: responseData.post.title,
         content: responseData.post.content
       };
-      this.postsUpdated.update((currentPosts) => [...currentPosts, newPost]);
+      this.postsUpdated.update((currentPosts) => [...currentPosts, post]);
       this.router.navigate(["/"])
 
     })
