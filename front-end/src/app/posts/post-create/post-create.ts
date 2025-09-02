@@ -101,7 +101,10 @@ const input = event.target as HTMLInputElement;
     }
     this.isLoading = true;
     if(this.mode === 'create'){
-      this.postsService.addPost(this.postForm.value.title, this.postForm.value.content);
+      this.postsService.addPost(
+        this.postForm.value.title, 
+        this.postForm.value.content, 
+        this.postForm.value.image);
     }else{
       this.postsService.updatePost(this.postId,this.postForm.value.title, this.postForm.value.content )
     }
