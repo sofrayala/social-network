@@ -18,22 +18,27 @@ export class PostList implements OnInit {
   isLoading=false;
   totalPosts = 10;
   postsPerPage = 2;
+  currentPage =1;
   pageSizeOptions = [1,2,5,10];
 
   constructor(private postsService: PostsService) {}
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.postsService.getPosts();
+    this.postsService.getPosts(this.postsPerPage, this.currentPage);
     this.isLoading = false;
     this.posts = this.postsService.postsSignal;
   }
 
 onChangedPage(pageData: PageEvent){
-console.log(pageData);
+    this.currentPage = pageData.pageIndex + 1;
+    this.postsPerPage = pageData.pageSize;
+    this.postsService.getPosts(this.postsPerPage, this.currentPage);
 }
 
   onDelete(postId : string){
-    this.postsService.deletePost(postId)
+    this.postsService.deletePost(postId).subscribe(() => {
+    this.postsService.getPosts(this.postsPerPage, this.currentPage);
+  });
   }
 }
